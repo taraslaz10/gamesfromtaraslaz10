@@ -1,0 +1,484 @@
+<!doctype html>
+<html>
+<head>
+<title>rectExample</title>
+<meta charset='utf-8' />
+    <style>
+        #canvas{
+            display: none;
+            position:absolute;
+            left:700px;
+        }
+    </style>
+</head>
+<body>
+    <p id="step">Хід</p>
+<canvas id='example'>Обновите браузер</canvas>
+<canvas id='canvas'>Браузер</canvas>
+<script>
+    var example = document.getElementById("example"),
+    ctx = example.getContext('2d');
+    
+    var canvas = document.getElementById("canvas");
+    ctx1 = canvas.getContext('2d');
+    
+    plwin1=0;
+    plwin2=0;
+    
+    canvas.width = 600;
+    canvas.height = 600;
+    
+    example.width = 600;
+    example.height = 600;
+    
+    function draw1(){
+    for (i=0; i<600;i+=60){
+        for(j=0;j<600;j+=60){
+            ctx1.strokeRect(i, j, 60, 60);
+        }
+    }
+    }
+    draw1();
+    
+    function draw(){
+    for (i=0; i<600;i+=60){
+        for(j=0;j<600;j+=60){
+            ctx.strokeRect(i, j, 60, 60);
+        }
+    }
+    }
+    
+    draw();
+    
+    var hod=0;
+    
+    function matrixArray(rows,columns){
+    var arr = new Array();
+    for(var i=0; i<columns; i++){
+    arr[i] = new Array();
+    for(var j=0; j<rows; j++){
+      arr[i][j] = 0;//вместо i+j+1 пишем любой наполнитель. В простейшем случае - null
+        }
+    }
+    return arr;
+    }
+    var go=0;
+    var player1 = matrixArray(10,10);
+    
+    var player2 = matrixArray(10,10);
+    
+    var i=0;
+    alert("Player1");    
+    var ast = true;
+    example.addEventListener('mouseup', function (e) {
+    var x = e.pageX - e.target.offsetLeft,
+        y = e.pageY - e.target.offsetTop;
+    
+        
+        
+    pic = new Image();
+    pic.src = "нолик.png";
+        
+    kar = new Image();
+    kar.src = "пусте.png";
+    
+    tok = new Image();
+    tok.src = "точка.png";
+        
+    function tocka(x,y){
+    tok.onload = function() {
+    ctx.drawImage(tok, (60*x)+1, (60*y)+1)}}
+    
+        
+    
+        
+    function puste(x,y){
+    kar.onload = function() {
+    ctx.drawImage(kar, (60*x)+1, (60*y)+1)}}
+        
+    function fpuste(){
+        for(i=0;i<10;i++){
+            for(j=0;j<10;j++){
+            puste(i,j);
+            }
+    }
+    }
+    //MAIN()    
+    function main(){
+    if(i<20){
+    if(vstavka(x,y)==true){
+    vstavka(x,y);
+    i+=1;
+    }
+    }
+    else if(i==20){
+        if(perevirka()==true){
+        i=21;alert("Player2");}
+        else{i=0;player1=matrixArray(10,10);alert("Player1");}
+    }
+    else if(i>20 && i<41){
+        if(vstavka2(x,y)==true){
+        vstavka2(x,y);
+        i+=1;
+        }
+    }
+    else if(i==41){
+        if(perevirka2()==true){i=42;document.getElementById("canvas").style.display='inline';}
+        else{i=21;player2=matrixArray(10,10);alert("Player2");}
+    }
+    else if(i>41){
+    if(hod==0){
+    pole1(x,y);
+    hod=1;
+    if(plwin==20){
+    alert("PLAYER1 win");
+    }
+    }
+    i+=1;
+    }
+    }
+    main();
+    //alert("Вставте 4-поверховий корабель");
+
+    //alert(x);    
+    
+    function pole1(x,y){
+    var i=0;var j=0;var chach=0;
+    while(chach<x){
+        chach+=60;
+        i++;
+        }
+        i-=1;
+    chach=0;
+    for(;chach<y;j++){
+        chach+=60;
+    }
+        j-=1;
+    if(player1[i][j]==0){
+    tocka(i,j);}
+    else{nol(i,j);plwin1+=1;}
+    }        
+    
+    
+        
+    function nol(x,y){    
+    pic.onload = function() {
+    ctx.drawImage(pic, (60*x)+1, (60*y)+1)}}
+       
+    
+        
+    function vstavka(x,y){
+    var port1=true;
+    var port2=true;
+    var port3=true;
+    var port4=true;
+    var chach=0;
+    var i=0;var j=0;
+    while(chach<x){
+        chach+=60;
+        i++;
+        }
+        i-=1;
+    chach=0;
+    for(;chach<y;j++){
+        chach+=60;
+    }
+        j-=1;
+        if(player1[i][j]==0){
+            if(j==0){port1=false;port2=false;}
+            if(j==9){port3=false;port4=false;}
+            if(i==0){port1=false;port3=false;}
+            if(i==9){port2=false;port4=false;}
+            if(port1){if(player1[i-1][j-1]==1){alert("Астанавитесь");ast=false;}}
+            if(port2){if(player1[i+1][j-1]==1){alert("Астанавитесь");ast=false;}}
+            if(port3){if(player1[i-1][j+1]==1){alert("Астанавитесь");ast=false;;}}
+            if(port4){if(player1[i+1][j+1]==1){alert("Астанавитесь");ast=false;}}
+        nol(i,j);
+        player1[i][j] = 1;
+        return true;}
+        else{
+        return false;
+        }
+    }
+    
+    function vstavka2(x,y){
+    var port1=true;
+    var port2=true;
+    var port3=true;
+    var port4=true;
+    var chach=0;
+    var i=0;var j=0;
+    while(chach<x){
+        chach+=60;
+        i++;
+        }
+        i-=1;
+    chach=0;
+    for(;chach<y;j++){
+        chach+=60;
+    }
+        j-=1;
+        if(player2[i][j]==0){
+            if(j==0){port1=false;port2=false;}
+            if(j==9){port3=false;port4=false;}
+            if(i==0){port1=false;port3=false;}
+            if(i==9){port2=false;port4=false;}
+            if(port1){if(player2[i-1][j-1]==1){alert("Астанавитесь");ast=false;}}
+            if(port2){if(player2[i+1][j-1]==1){alert("Астанавитесь");ast=false;}}
+            if(port3){if(player2[i-1][j+1]==1){alert("Астанавитесь");ast=false;;}}
+            if(port4){if(player2[i+1][j+1]==1){alert("Астанавитесь");ast=false;}}
+        nol(i,j);
+        player2[i][j] = 1;
+        return true;}
+        else{
+        return false;
+        }
+    }    
+        
+        
+        
+    function perevirka(){
+    var arr=0;
+    var spec=0;
+    var korabl4=0;
+    var korabl3=0;
+    var korabl2=0;
+    var korabl1=0;
+    var rty=4;
+    while(rty<5 && rty>0){
+    for(i=0;i<10;i++){
+        for(j=0;j<10;j++){
+            if(player1[i][j]==1){
+                arr+=1;
+                spec=1;
+            }
+            else{
+                if(arr==4 && rty==4){
+                korabl4+=1;
+                }
+                if(arr==3 && rty==3){
+                korabl3+=1;
+                }
+                if(arr==2 && rty==2){
+                korabl2+=1;
+                }
+                if(arr==1 && rty==1){
+                korabl1+=1;
+                }
+                arr=0;
+            }
+            if(j==9 && player1[i][j]==1){
+                if(arr==4  && rty==4){
+                korabl4+=1;
+                }
+                if(arr==3  && rty==3){
+                korabl3+=1;
+                }
+                if(arr==2  && rty==2){
+                korabl2+=1;
+                }
+                if(arr==1  && rty==1){
+                korabl1+=1;
+                }
+                arr=0;
+            }
+            
+        }
+        }
+        for(j=0;j<10;j++){
+        for(i=0;i<10;i++){
+            if(player1[i][j]==1){
+                arr+=1;
+                spec=1;
+            }
+            else{
+                if(arr==4 && rty==4){
+                korabl4+=1;
+                }
+                if(arr==3 && rty==3){
+                korabl3+=1;
+                }
+                if(arr==2 && rty==2){
+                korabl2+=1;
+                }
+                if(arr==1 && rty==1){
+                korabl1+=1;
+                }
+                arr=0;
+            }
+            if(i==9 && player1[i][j]==1){
+                if(arr==4 && rty==4){
+                korabl4+=1;
+                }
+                if(arr==3 && rty==3){
+                korabl3+=1;
+                }
+                if(arr==2 && rty==2){
+                korabl2+=1;
+                }
+                if(arr==1 && rty==1){
+                korabl1+=1;
+                }
+                arr=0;
+            }
+            
+        }
+    }
+    rty-=1;
+    }
+    if(korabl1==24 && korabl2==3 && korabl3==2 && korabl4==1 && ast){alert("Korabli rostavleni");clear();return true;}
+    else{alert("Астановитесь");ast=true;clear();return false;}
+    }
+    function clear(){
+    ctx.clearRect(0, 0, example.width, example.height);
+    draw();
+    }
+    
+     
+    function perevirka2(){
+    var arr=0;
+    var spec=0;
+    var korabl4=0;
+    var korabl3=0;
+    var korabl2=0;
+    var korabl1=0;
+    var rty=4;
+    while(rty<5 && rty>0){
+    for(i=0;i<10;i++){
+        for(j=0;j<10;j++){
+            if(player2[i][j]==1){
+                arr+=1;
+                spec=1;
+            }
+            else{
+                if(arr==4 && rty==4){
+                korabl4+=1;
+                }
+                if(arr==3 && rty==3){
+                korabl3+=1;
+                }
+                if(arr==2 && rty==2){
+                korabl2+=1;
+                }
+                if(arr==1 && rty==1){
+                korabl1+=1;
+                }
+                arr=0;
+            }
+            if(j==9 && player2[i][j]==1){
+                if(arr==4  && rty==4){
+                korabl4+=1;
+                }
+                if(arr==3  && rty==3){
+                korabl3+=1;
+                }
+                if(arr==2  && rty==2){
+                korabl2+=1;
+                }
+                if(arr==1  && rty==1){
+                korabl1+=1;
+                }
+                arr=0;
+            }
+            
+        }
+        }
+        for(j=0;j<10;j++){
+        for(i=0;i<10;i++){
+            if(player2[i][j]==1){
+                arr+=1;
+                spec=1;
+            }
+            else{
+                if(arr==4 && rty==4){
+                korabl4+=1;
+                }
+                if(arr==3 && rty==3){
+                korabl3+=1;
+                }
+                if(arr==2 && rty==2){
+                korabl2+=1;
+                }
+                if(arr==1 && rty==1){
+                korabl1+=1;
+                }
+                arr=0;
+            }
+            if(i==9 && player2[i][j]==1){
+                if(arr==4 && rty==4){
+                korabl4+=1;
+                }
+                if(arr==3 && rty==3){
+                korabl3+=1;
+                }
+                if(arr==2 && rty==2){
+                korabl2+=1;
+                }
+                if(arr==1 && rty==1){
+                korabl1+=1;
+                }
+                arr=0;
+            }
+            
+        }
+    }
+    rty-=1;
+    }
+    if(korabl1==24 && korabl2==3 && korabl3==2 && korabl4==1 && ast){alert("Korabli rostavleni");clear();return true;}
+    else{alert("Астановитесь");ast=true;clear();return false;}
+    }   
+    
+        
+    
+        
+    });
+    
+    canvas.addEventListener('mouseup', function (e1) {
+    var x1 = e1.pageX - e1.target.offsetLeft,
+        y1 = e1.pageY - e1.target.offsetTop;
+    
+    pic1 = new Image();
+    pic1.src = "нолик.png";
+        
+    kar1 = new Image();
+    kar1.src = "пусте.png";
+    
+    tok1 = new Image();
+    tok1.src = "точка.png";    
+        
+        
+    function tocka1(x,y){
+    tok1.onload = function() {
+    ctx1.drawImage(tok1, (60*x)+1, (60*y)+1)}}
+        
+    function nol1(x,y){    
+    pic1.onload = function() {
+    ctx1.drawImage(pic1, (60*x)+1, (60*y)+1)}}    
+        
+    function pole2(x,y){
+    var i=0;var j=0;var chach=0;
+    while(chach<x){
+        chach+=60;
+        i++;
+        }
+        i=i-1;
+    chach=0;
+    for(;chach<y;j++){
+        chach+=60;
+    }
+        j=j-1;
+    if(player2[i][j]==0){
+    tocka1(i,j);}
+    else{nol1(i,j);plwin2+=1;}
+    }
+    if(hod==1){
+    pole2(x1,y1);
+    hod=0;
+    if(plwin2==20){
+    alert("PLAYER2 win");
+    }}
+    
+    });
+</script>
+</body>
+</html>
